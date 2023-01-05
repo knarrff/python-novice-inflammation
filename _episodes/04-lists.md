@@ -1,7 +1,7 @@
 ---
 title: Storing Multiple Values in Lists
-teaching: 30
-exercises: 15
+teaching: 20
+exercises: 10
 questions:
 - "How can I store many values together?"
 objectives:
@@ -161,62 +161,6 @@ does not.
 > understand. However, it is often far more efficient to modify a large data structure in place
 > than to create a modified copy for every small change. You should consider both of these aspects
 > when writing your code.
-{: .callout}
-
-> ## Nested Lists
-> Since a list can contain any Python variables, it can even contain other lists.
->
-> For example, we could represent the products in the shelves of a small grocery shop:
->
-> ~~~
-> x = [['pepper', 'zucchini', 'onion'],
->      ['cabbage', 'lettuce', 'garlic'],
->      ['apple', 'pear', 'banana']]
-> ~~~
-> {: .language-python}
->
-> Here is a visual example of how indexing a list of lists `x` works:
->
-> [![x is represented as a pepper shaker containing several packets of pepper. [x[0]] is represented
-> as a pepper shaker containing a single packet of pepper. x[0] is represented as a single packet of
-> pepper. x[0][0] is represented as single grain of pepper.  Adapted
-> from @hadleywickham.](../fig/indexing_lists_python.png)][hadleywickham-tweet]
->
-> Using the previously declared list `x`, these would be the results of the
-> index operations shown in the image:
->
-> ~~~
-> print([x[0]])
-> ~~~
-> {: .language-python}
->
-> ~~~
-> [['pepper', 'zucchini', 'onion']]
-> ~~~
-> {: .output}
->
-> ~~~
-> print(x[0])
-> ~~~
-> {: .language-python}
->
-> ~~~
-> ['pepper', 'zucchini', 'onion']
-> ~~~
-> {: .output}
->
-> ~~~
-> print(x[0][0])
-> ~~~
-> {: .language-python}
->
-> ~~~
-> 'pepper'
-> ~~~
-> {: .output}
->
-> Thanks to [Hadley Wickham][hadleywickham-tweet]
-> for the image above.
 {: .callout}
 
 > ## Heterogeneous Lists
@@ -490,47 +434,6 @@ Using len() to get last entry: ['sep', 'oct', 'nov', 'dec']
 Omitting ending index: ['sep', 'oct', 'nov', 'dec']
 ~~~
 {: .output}
-
-> ## Overloading
->
-> `+` usually means addition, but when used on strings or lists, it means "concatenate".
-> Given that, what do you think the multiplication operator `*` does on lists?
-> In particular, what will be the output of the following code?
->
-> ~~~
-> counts = [2, 4, 6, 8, 10]
-> repeats = counts * 2
-> print(repeats)
-> ~~~
-> {: .language-python}
->
-> 1.  `[2, 4, 6, 8, 10, 2, 4, 6, 8, 10]`
-> 2.  `[4, 8, 12, 16, 20]`
-> 3.  `[[2, 4, 6, 8, 10],[2, 4, 6, 8, 10]]`
-> 4.  `[2, 4, 6, 8, 10, 4, 8, 12, 16, 20]`
->
-> The technical term for this is *operator overloading*:
-> a single operator, like `+` or `*`,
-> can do different things depending on what it's applied to.
->
-> > ## Solution
-> >
-> > The multiplication operator `*` used on a list replicates elements of the list and concatenates
-> > them together:
-> >
-> > ~~~
-> > [2, 4, 6, 8, 10, 2, 4, 6, 8, 10]
-> > ~~~
-> > {: .output}
-> >
-> > It's equivalent to:
-> >
-> > ~~~
-> > counts + counts
-> > ~~~
-> > {: .language-python}
-> {: .solution}
-{: .challenge}
 
 [hadleywickham-tweet]: https://twitter.com/hadleywickham/status/643381054758363136
 

@@ -1,7 +1,7 @@
 ---
 title: Analyzing Patient Data
-teaching: 40
-exercises: 20
+teaching: 35
+exercises: 15
 questions:
 - "How can I process tabular data files in Python?"
 objectives:
@@ -565,116 +565,6 @@ which is the average inflammation per patient across all days.
 > > last three characters: try
 > > last three characters: one
 > > last three characters: hi
-> > ~~~
-> > {: .output}
-> {: .solution}
-{: .challenge}
-
-> ## Thin Slices
->
-> The expression `element[3:3]` produces an
-> [empty string]({{ page.root }}/reference.html#empty-string),
-> i.e., a string that contains no characters.
-> If `data` holds our array of patient data,
-> what does `data[3:3, 4:4]` produce?
-> What about `data[3:3, :]`?
->
-> > ## Solution
-> > ~~~
-> > array([], shape=(0, 0), dtype=float64)
-> > array([], shape=(0, 40), dtype=float64)
-> > ~~~
-> > {: .output}
-> {: .solution}
-{: .challenge}
-
-> ## Stacking Arrays
->
-> Arrays can be concatenated and stacked on top of one another,
-> using NumPy's `vstack` and `hstack` functions for vertical and horizontal stacking, respectively.
->
-> ~~~
-> import numpy
->
-> A = numpy.array([[1,2,3], [4,5,6], [7, 8, 9]])
-> print('A = ')
-> print(A)
->
-> B = numpy.hstack([A, A])
-> print('B = ')
-> print(B)
->
-> C = numpy.vstack([A, A])
-> print('C = ')
-> print(C)
-> ~~~
-> {: .language-python}
->
-> ~~~
-> A =
-> [[1 2 3]
->  [4 5 6]
->  [7 8 9]]
-> B =
-> [[1 2 3 1 2 3]
->  [4 5 6 4 5 6]
->  [7 8 9 7 8 9]]
-> C =
-> [[1 2 3]
->  [4 5 6]
->  [7 8 9]
->  [1 2 3]
->  [4 5 6]
->  [7 8 9]]
-> ~~~
-> {: .output}
->
-> Write some additional code that slices the first and last columns of `A`,
-> and stacks them into a 3x2 array.
-> Make sure to `print` the results to verify your solution.
->
-> > ## Solution
-> >
-> > A 'gotcha' with array indexing is that singleton dimensions
-> > are dropped by default. That means `A[:, 0]` is a one dimensional
-> > array, which won't stack as desired. To preserve singleton dimensions,
-> > the index itself can be a slice or array. For example, `A[:, :1]` returns
-> > a two dimensional array with one singleton dimension (i.e. a column
-> > vector).
-> >
-> > ~~~
-> > D = numpy.hstack((A[:, :1], A[:, -1:]))
-> > print('D = ')
-> > print(D)
-> > ~~~
-> > {: .language-python}
-> >
-> > ~~~
-> > D =
-> > [[1 3]
-> >  [4 6]
-> >  [7 9]]
-> > ~~~
-> > {: .output}
-> {: .solution}
->
-> > ## Solution
-> >
-> > An alternative way to achieve the same result is to use Numpy's
-> > delete function to remove the second column of A.
-> >
-> > ~~~
-> > D = numpy.delete(A, 1, 1)
-> > print('D = ')
-> > print(D)
-> > ~~~
-> > {: .language-python}
-> >
-> > ~~~
-> > D =
-> > [[1 3]
-> >  [4 6]
-> >  [7 9]]
 > > ~~~
 > > {: .output}
 > {: .solution}
