@@ -32,14 +32,12 @@ keypoints:
 ---
 
 At this point,
-we've written code to draw some interesting features in our inflammation data,
-loop over all our data files to quickly draw these plots for each of them,
+we've written code to print some interesting features in our inflammation data
 and have Python make decisions based on what it sees in our data.
 But, our code is getting pretty long and complicated;
 what if we had thousands of datasets,
 and didn't want to generate a figure for every single one?
-Commenting out the figure-drawing code is a nuisance.
-Also, what if we want to use that code again,
+What if we want to use that code again,
 on a different dataset or at a different point in our program?
 Cutting and pasting it is going to make our code get very long and very repetitive,
 very quickly.
@@ -205,34 +203,8 @@ temperature in Kelvin was: 373.15
 
 Now that we know how to wrap bits of code up in functions,
 we can make our inflammation analysis easier to read and easier to reuse.
-First, let's make a `visualize` function that generates our plots:
 
-~~~
-def visualize(filename):
-
-    data = numpy.loadtxt(fname=filename, delimiter=',')
-
-    fig = matplotlib.pyplot.figure(figsize=(10.0, 3.0))
-
-    axes1 = fig.add_subplot(1, 3, 1)
-    axes2 = fig.add_subplot(1, 3, 2)
-    axes3 = fig.add_subplot(1, 3, 3)
-
-    axes1.set_ylabel('average')
-    axes1.plot(numpy.mean(data, axis=0))
-
-    axes2.set_ylabel('max')
-    axes2.plot(numpy.max(data, axis=0))
-
-    axes3.set_ylabel('min')
-    axes3.plot(numpy.min(data, axis=0))
-
-    fig.tight_layout()
-    matplotlib.pyplot.show()
-~~~
-{: .language-python}
-
-and another function called `detect_problems` that checks for those systematics
+We can create a function called `detect_problems` that checks for those systematics
 we noticed:
 
 ~~~
@@ -255,7 +227,7 @@ the sole purpose of grouping together pieces of code that conceptually do one th
 function names usually describe what they do, _e.g._ `visualize`, `detect_problems`.
 
 Notice that rather than jumbling this code together in one giant `for` loop,
-we can now read and reuse both ideas separately.
+we can now read and reuse ideas separately.
 We can reproduce the previous analysis with a much simpler `for` loop:
 
 ~~~
@@ -263,7 +235,6 @@ filenames = sorted(glob.glob('inflammation*.csv'))
 
 for filename in filenames[:3]:
     print(filename)
-    visualize(filename)
     detect_problems(filename)
 ~~~
 {: .language-python}
@@ -273,116 +244,9 @@ we can more easily read and understand what is happening in the `for` loop.
 Even better, if at some later date we want to use either of those pieces of code again,
 we can do so in a single line.
 
-## Testing and Documenting
+## Documenting
 
-Once we start putting things in functions so that we can re-use them,
-we need to start testing that those functions are working correctly.
-To see how to do this,
-let's write a function to offset a dataset so that it's mean value
-shifts to a user-defined value:
-
-~~~
-def offset_mean(data, target_mean_value):
-    return (data - numpy.mean(data)) + target_mean_value
-~~~
-{: .language-python}
-
-We could test this on our actual data,
-but since we don't know what the values ought to be,
-it will be hard to tell if the result was correct.
-Instead,
-let's use NumPy to create a matrix of 0's
-and then offset its values to have a mean value of 3:
-
-~~~
-z = numpy.zeros((2,2))
-print(offset_mean(z, 3))
-~~~
-{: .language-python}
-
-~~~
-[[ 3.  3.]
- [ 3.  3.]]
-~~~
-{: .output}
-
-That looks right,
-so let's try `offset_mean` on our real data:
-
-~~~
-data = numpy.loadtxt(fname='inflammation-01.csv', delimiter=',')
-print(offset_mean(data, 0))
-~~~
-{: .language-python}
-
-~~~
-[[-6.14875 -6.14875 -5.14875 ... -3.14875 -6.14875 -6.14875]
- [-6.14875 -5.14875 -4.14875 ... -5.14875 -6.14875 -5.14875]
- [-6.14875 -5.14875 -5.14875 ... -4.14875 -5.14875 -5.14875]
- ...
- [-6.14875 -5.14875 -5.14875 ... -5.14875 -5.14875 -5.14875]
- [-6.14875 -6.14875 -6.14875 ... -6.14875 -4.14875 -6.14875]
- [-6.14875 -6.14875 -5.14875 ... -5.14875 -5.14875 -6.14875]]
-~~~
-{: .output}
-
-It's hard to tell from the default output whether the result is correct,
-but there are a few tests that we can run to reassure us:
-
-~~~
-print('original min, mean, and max are:', numpy.min(data), numpy.mean(data), numpy.max(data))
-offset_data = offset_mean(data, 0)
-print('min, mean, and max of offset data are:',
-      numpy.min(offset_data),
-      numpy.mean(offset_data),
-      numpy.max(offset_data))
-~~~
-{: .language-python}
-
-~~~
-original min, mean, and max are: 0.0 6.14875 20.0
-min, mean, and and max of offset data are: -6.14875 2.84217094304e-16 13.85125
-~~~
-{: .output}
-
-That seems almost right:
-the original mean was about 6.1,
-so the lower bound from zero is now about -6.1.
-The mean of the offset data isn't quite zero --- we'll explore why not in the challenges --- but
-it's pretty close.
-We can even go further and check that the standard deviation hasn't changed:
-
-~~~
-print('std dev before and after:', numpy.std(data), numpy.std(offset_data))
-~~~
-{: .language-python}
-
-~~~
-std dev before and after: 4.61383319712 4.61383319712
-~~~
-{: .output}
-
-Those values look the same,
-but we probably wouldn't notice if they were different in the sixth decimal place.
-Let's do this instead:
-
-~~~
-print('difference in standard deviations before and after:',
-      numpy.std(data) - numpy.std(offset_data))
-~~~
-{: .language-python}
-
-~~~
-difference in standard deviations before and after: -3.5527136788e-15
-~~~
-{: .output}
-
-Again,
-the difference is very small.
-It's still possible that our function is wrong,
-but it seems unlikely enough that we should probably get back to doing our analysis.
-We have one more task first, though:
-we should write some [documentation]({{ page.root }}/reference.html#documentation) for our function
+We should write some [documentation]({{ page.root }}/reference.html#documentation) for our function
 to remind ourselves later what it's for and how to use it.
 
 The usual way to put documentation in software is

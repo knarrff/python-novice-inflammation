@@ -404,29 +404,6 @@ freeing us from having to manually examine every plot for features we've seen be
 > {: .solution}
 {: .challenge}
 
-> ## Counting Vowels
->
-> 1. Write a loop that counts the number of vowels in a character string.
-> 2. Test it on a few individual words and full sentences.
-> 3. Once you are done, compare your solution to your neighbor's.
->    Did you make the same decisions about how to handle the letter 'y'
->    (which some people think is a vowel, and some do not)?
->
-> > ## Solution
-> > ~~~
-> > vowels = 'aeiouAEIOU'
-> > sentence = 'Mary had a little lamb.'
-> > count = 0
-> > for char in sentence:
-> >     if char in vowels:
-> >         count += 1
-> >
-> > print('The number of vowels in this string is ' + str(count))
-> > ~~~
-> > {: .language-python}
-> {: .solution}
-{: .challenge}
-
 [abs-function]: https://docs.python.org/3/library/functions.html#abs
 
 {% include links.md %}
