@@ -88,8 +88,7 @@ scientists tend to do the following:
 5.  *Visualize.*
     Data analysts frequently use simple visualizations to check both
     the science they're doing
-    and the correctness of their code
-    (just as we did in the [opening lesson]({{ page.root }}/01-numpy/) of this tutorial).
+    and the correctness of their code.    
     This should only be used for debugging as a last resort,
     though,
     since it's very hard to compare two visualizations automatically.
